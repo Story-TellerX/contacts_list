@@ -47,6 +47,8 @@ def avg_h_w_stat():
 def spaceman_in_space():
     return astronaut_in_space()
 
+# App run - Added a comment to create a difference between the main and homework2 branches
+
 
 if __name__ == '__main__':
     app.run()

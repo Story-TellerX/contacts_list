@@ -119,3 +119,5 @@ def astronaut_in_space() -> str:
         names_astro.append(d['name'])
     answer = f"\n Всего в космосе: {numbers} космонавтов. \n\n\n Вот имена этих смельчаков: \n {names_astro}"
     return answer
+
+# Added a comment to create a difference between the main and homework2 branches
