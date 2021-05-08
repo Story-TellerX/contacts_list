@@ -48,6 +48,7 @@ def spaceman_in_space():
     return astronaut_in_space()
 
 # App run - Added a comment to create a difference between the main and homework2 branches
+# Added comment to check for updating pull request
 
 
 if __name__ == '__main__':
