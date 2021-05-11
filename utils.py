@@ -16,7 +16,7 @@ def gen_users(count: int = 100) -> str:
     faker = Faker()
     name_email = []
     for i in range(count):
-        gen_name = f'{faker.name()} {faker.email()}'
+        gen_name = f'{faker.email()} {faker.name()}'
         name_email.append(gen_name)
     return str(name_email)  # Поправил тип данных
 
@@ -119,3 +119,7 @@ def astronaut_in_space() -> str:
         names_astro.append(d['name'])
     answer = f"\n Всего в космосе: {numbers} космонавтов. \n\n\n Вот имена этих смельчаков: \n {names_astro}"
     return answer
+
+# Added a comment to create a difference between the main and homework2 branches
+
+# Added comment to check for updating pull request
