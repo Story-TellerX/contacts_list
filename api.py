@@ -10,7 +10,7 @@ def create_table_users() -> str:
     sql_create_users = """
     CREATE TABLE IF NOT EXISTS users
     (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    first_name VARCHAR(25), last_name VARCHAR(50));
+    name VARCHAR(25));
     """
 
     # Create table
@@ -34,7 +34,7 @@ def create_table_phones() -> str:
     CREATE TABLE IF NOT EXISTS phones
     (id INTEGER PRIMARY KEY,
     id_people INTEGER,
-    value VARCHAR(20) UNIQUE,
+    value VARCHAR(20),
     FOREIGN KEY (id_people)  REFERENCES users (id));
     """
 
@@ -52,14 +52,12 @@ def create_table_phones() -> str:
 def insert_value_in_table() -> str:
     con = sqlite3.connect("./users.db")
     cur = con.cursor()
-    sql_insert_value_in_users = """
-    INSERT INTO users
-    values (null, 'Dima', 'First');
-    """
+    name_for_table = "Dima"
+
+    sql_insert_value_in_users = f"INSERT INTO users values (null,'{name_for_table}');"
     cur.execute(sql_insert_value_in_users)
-    con.commit()
-    id_for_phones = int(cur.lastrowid)
-    sql_insert_value_in_phones = f"INSERT INTO phones values (null, {id_for_phones}, '+38077111224');"
+
+    sql_insert_value_in_phones = f"INSERT INTO phones values (null, (SELECT id FROM users WHERE name='{name_for_table}'), '+38077111224');"
     cur.execute(sql_insert_value_in_phones)
     con.commit()
     con.close()
@@ -73,12 +71,11 @@ def select_from_table_users() -> str:
 
     sql_select_from_users = """
     SELECT * FROM users;
-        """
+    """
 
     cur.execute(sql_select_from_users)
     user_list = cur.fetchall()
 
-    # Close connection
     con.close()
     return str(user_list)
 
@@ -90,12 +87,11 @@ def select_from_table_phones() -> str:
 
     sql_select_from_phones = """
     SELECT * FROM phones;
-        """
+    """
 
     cur.execute(sql_select_from_phones)
     phones_list = cur.fetchall()
 
-    # Close connection
     con.close()
     return str(phones_list)
 
@@ -106,10 +102,10 @@ def select_from_table_both() -> str:
     cur = con.cursor()
 
     sql_select_from_both = """
-    SELECT users.id as id, first_name, last_name, value 
+    SELECT users.id as id, name, value 
     FROM users 
-    JOIN phones ON users.id = phones.id;
-        """
+    JOIN phones ON users.id = phones.id_people;
+    """
 
     cur.execute(sql_select_from_both)
     both_list = cur.fetchall()
@@ -125,13 +121,13 @@ def delete_from_both() -> str:
 
     sql_delete_from_users = """
     DELETE FROM  users;
-        """
+    """
     cur.execute(sql_delete_from_users)
     con.commit()
 
     sql_delete_from_phones = """
     DELETE FROM  phones;
-        """
+    """
     cur.execute(sql_delete_from_phones)
     con.commit()
 
