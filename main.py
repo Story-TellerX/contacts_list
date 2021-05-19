@@ -52,4 +52,4 @@ def spaceman_in_space():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
