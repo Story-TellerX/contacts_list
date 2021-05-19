@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from utils import read_txt, gen_users, count_avg_height_weight, count_avg_stat, astronaut_in_space
+from api import create_table_users, create_table_phones
 
 app = Flask("home_work_1")
 
@@ -49,6 +50,31 @@ def spaceman_in_space():
 
 # App run - Added a comment to create a difference between the main and homework2 branches
 # Added comment to check for updating pull request
+
+
+@app.route('/create/users/')
+def create_users_table():
+    return create_table_users()
+
+
+@app.route('/create/phones/')
+def create_phones_table():
+    return create_table_phones()
+
+
+@app.route('/select/')
+def select_from_db():
+    return f"This is route for select request"
+
+
+@app.route('/update/')
+def update_in_db():
+    return f"This is route for update request"
+
+
+@app.route('/delete/')
+def delete_from_db():
+    return f"This is route for delete request"
 
 
 if __name__ == '__main__':
