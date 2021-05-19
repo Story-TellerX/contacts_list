@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 from utils import read_txt, gen_users, count_avg_height_weight, count_avg_stat, astronaut_in_space
-from api import create_table_users, create_table_phones
+from api import create_table_users, create_table_phones, insert_value_in_table, select_from_table_users, select_from_table_phones, select_from_table_both, delete_from_both
 
 app = Flask("home_work_1")
 
@@ -62,19 +62,29 @@ def create_phones_table():
     return create_table_phones()
 
 
-@app.route('/select/')
+@app.route('/select/users/')
+def select_from_db_users():
+    return select_from_table_users()
+
+
+@app.route('/select/phones/')
+def select_from_db_phones():
+    return select_from_table_phones()
+
+
+@app.route('/select/both/')
 def select_from_db():
-    return f"This is route for select request"
+    return select_from_table_both()
 
 
-@app.route('/update/')
-def update_in_db():
-    return f"This is route for update request"
+@app.route('/insert/')
+def insert_in_db():
+    return insert_value_in_table()
 
 
 @app.route('/delete/')
 def delete_from_db():
-    return f"This is route for delete request"
+    return delete_from_both()
 
 
 if __name__ == '__main__':
