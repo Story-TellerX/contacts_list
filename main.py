@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 from utils import read_txt, gen_users, count_avg_height_weight, count_avg_stat, astronaut_in_space
-from api import create_table_users, create_table_phones, insert_value_in_table, select_from_table_users, select_from_table_phones, select_from_table_both, delete_from_both
+from api import create_table_users, insert_value_in_table, select_from_table_users, select_from_table_phones, select_from_table_both, delete_from_both
 
 app = Flask("home_work_1")
 
@@ -52,14 +52,9 @@ def spaceman_in_space():
 # Added comment to check for updating pull request
 
 
-@app.route('/create/users/')
+@app.route('/create/')
 def create_users_table():
     return create_table_users()
-
-
-@app.route('/create/phones/')
-def create_phones_table():
-    return create_table_phones()
 
 
 @app.route('/select/users/')

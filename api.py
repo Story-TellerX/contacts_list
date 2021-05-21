@@ -12,41 +12,27 @@ def create_table_users() -> str:
     (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(25));
     """
-
     # Create table
     cur.execute(sql_create_users)
 
-    # Save (commit) the changes
-    con.commit()
-
-    # Close connection
-    con.close()
-    return str("table users is created")
-
-
-def create_table_phones() -> str:
-    # Create connection
-    con = sqlite3.connect('./users.db')
-    cur = con.cursor()
-
-    # create a sql query
     sql_create_phones = """
     CREATE TABLE IF NOT EXISTS phones
     (id INTEGER PRIMARY KEY,
     id_people INTEGER,
     value VARCHAR(20),
-    FOREIGN KEY (id_people)  REFERENCES users (id));
+    FOREIGN KEY (id_people)  REFERENCES users (id) ON DELETE CASCADE;
     """
-
+    # It should be create an ability to delete data from user and data from phones will be delete by cascade
     # Create table
     cur.execute(sql_create_phones)
+
 
     # Save (commit) the changes
     con.commit()
 
     # Close connection
     con.close()
-    return str("table phones is created")
+    return str("tables users and phones are created")
 
 
 def insert_value_in_table() -> str:
