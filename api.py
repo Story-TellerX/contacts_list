@@ -10,7 +10,7 @@ def create_table_users() -> str:
     sql_create_users = """
     CREATE TABLE IF NOT EXISTS users
     (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(25));
+    name VARCHAR(25) UNIQUE);
     """
     # Create table
     cur.execute(sql_create_users)
@@ -20,12 +20,11 @@ def create_table_users() -> str:
     (id INTEGER PRIMARY KEY,
     id_people INTEGER,
     value VARCHAR(20),
-    FOREIGN KEY (id_people)  REFERENCES users (id) ON DELETE CASCADE;
+    FOREIGN KEY (id_people)  REFERENCES users (id) ON DELETE CASCADE);
     """
-    # It should be create an ability to delete data from user and data from phones will be delete by cascade
+    # It should be create an ability to delete data from user and data from phones will be deleted by cascade
     # Create table
     cur.execute(sql_create_phones)
-
 
     # Save (commit) the changes
     con.commit()
@@ -35,19 +34,19 @@ def create_table_users() -> str:
     return str("tables users and phones are created")
 
 
-def insert_value_in_table() -> str:
+def insert_value_in_table(name: str, phone: str) -> str:
     con = sqlite3.connect("./users.db")
     cur = con.cursor()
-    name_for_table = "Dima"
 
-    sql_insert_value_in_users = f"INSERT INTO users values (null,'{name_for_table}');"
+    sql_insert_value_in_users = f"INSERT INTO users values (null,'{name}');"
     cur.execute(sql_insert_value_in_users)
 
-    sql_insert_value_in_phones = f"INSERT INTO phones values (null, (SELECT id FROM users WHERE name='{name_for_table}'), '+38077111224');"
+    sql_insert_value_in_phones = f"INSERT INTO phones values (null, (SELECT id FROM users WHERE name='{name}'), '{phone}');"
     cur.execute(sql_insert_value_in_phones)
+    # Added relates for user name and phone number
     con.commit()
     con.close()
-    return str("Data in table are update")
+    return str("Data in table are updated")
 
 
 def select_from_table_users() -> str:
@@ -92,7 +91,7 @@ def select_from_table_both() -> str:
     FROM users 
     JOIN phones ON users.id = phones.id_people;
     """
-
+    # Create SELECT JOIN for user with select phones that they have
     cur.execute(sql_select_from_both)
     both_list = cur.fetchall()
 
@@ -106,17 +105,33 @@ def delete_from_both() -> str:
     cur = con.cursor()
 
     sql_delete_from_users = """
-    DELETE FROM  users;
+    DELETE FROM users;
     """
     cur.execute(sql_delete_from_users)
-    con.commit()
 
     sql_delete_from_phones = """
-    DELETE FROM  phones;
+    DELETE FROM phones;
     """
     cur.execute(sql_delete_from_phones)
     con.commit()
 
     con.close()
 
-    return f'All data were deleted'
+    return str("All data were deleted")
+
+
+def delete_from_db_by_id(name: str) -> str:
+    con = sqlite3.connect('./users.db')
+    cur = con.cursor()
+
+    sql_delete_from_users = f"DELETE FROM users WHERE name='{name}';"
+    sql_delete_from_phones = f"DELETE FROM phones WHERE id=(SELECT id FROM users WHERE name='{name}')"
+    # Deleting data from phones when some user was selected for deleting and delete record about user
+
+    cur.execute(sql_delete_from_phones)
+    cur.execute(sql_delete_from_users)
+
+    con.commit()
+
+    con.close()
+    return str(f'User with name {name} was deleted')
