@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from utils import read_txt, gen_users, count_avg_height_weight, count_avg_stat, astronaut_in_space
+from api import create_table_users, insert_value_in_table, select_from_table_users, select_from_table_phones, select_from_table_both, delete_from_both, delete_from_db_by_id
 
 app = Flask("home_work_1")
 
@@ -51,5 +52,52 @@ def spaceman_in_space():
 # Added comment to check for updating pull request
 
 
+@app.route('/create/')
+def create_users_table():
+    return create_table_users()
+
+
+@app.route('/select/')
+def select_from_db():
+    return select_from_table_both()
+
+
+@app.route('/select/users/')
+def select_from_db_users():
+    return select_from_table_users()
+
+
+@app.route('/select/phones/')
+def select_from_db_phones():
+    return select_from_table_phones()
+
+
+@app.route('/insert/')
+def insert_in_db():
+    query_params = request.args
+    name = query_params.get('name')
+    name = str(name)
+    phone = query_params.get('phone')
+    phone = str(phone)
+    return insert_value_in_table(name, phone)
+
+
+@app.route('/delete/')
+def delete_by_id():
+    query_params = request.args
+    name = query_params.get('name')
+    name = str(name)
+    return delete_from_db_by_id(name)
+
+
+@app.route('/delete/all/')
+def delete_from_db():
+    return delete_from_both()
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+
+# used ssh for push
+# second try with connection
+# I understood, that repo was created with https)
